@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "725281008499",
+    "project_id": "forrent-ffe06",
+    "storage_bucket": "forrent-ffe06.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:725281008499:android:90a0ea485514a098b73306",
+        "android_client_info": {
+          "package_name": "com.example.forrent"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "725281008499-l4it1af3ash9j47qjk74kvmrqtf4ubni.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDfwi3bQIGzjIkTLEiHyNsw8q1ip6EPTNs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "725281008499-l4it1af3ash9j47qjk74kvmrqtf4ubni.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
