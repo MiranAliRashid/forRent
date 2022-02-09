@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:forrent/screens/startScreen/start_screen.dart';
+import 'package:forrent/services/auth_handler.dart';
 
 class Routes extends StatelessWidget {
   const Routes({Key? key}) : super(key: key);
@@ -6,9 +8,8 @@ class Routes extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(initialRoute: "/", routes: {
-      //"/": (context) => HomePage(),
-      //"/second": (context) => SecondPage(),
-      //"/third": (context) => ThirdPage(),
+      "/": (context) => const AuthHandlerScreen(),
+      "/startScreen": (context) => StartScreen(),
     });
   }
 }

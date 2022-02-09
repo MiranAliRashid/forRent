@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:forrent/providers/auth_service.dart';
+import 'package:forrent/screens/startScreen/start_screen.dart';
 import 'package:provider/provider.dart';
 
 class AuthHandlerScreen extends StatelessWidget {
@@ -21,7 +22,7 @@ class AuthHandlerScreen extends StatelessWidget {
             return Text("User is logged in");
           }
           //user is not logged in so redirect to login
-          return Text("not logged in");
+          return const StartScreen();
         },
       ),
     );
