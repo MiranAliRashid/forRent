@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:forrent/providers/auth_service.dart';
+import 'package:forrent/screens/navConfigScreen/nav_config_screen.dart';
 import 'package:forrent/screens/startScreen/start_screen.dart';
 import 'package:provider/provider.dart';
 
@@ -10,7 +11,7 @@ class AuthHandlerScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: FutureBuilder(
-        future: Provider.of<AuthService>(context, listen: false).isLoggedIn(),
+        future: Provider.of<AuthService>(context, listen: true).isLoggedIn(),
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
             return const Center(child: CircularProgressIndicator());
@@ -19,7 +20,7 @@ class AuthHandlerScreen extends StatelessWidget {
           }
           if (snapshot.data == true) {
             //user is logged in so redirect to home
-            return Text("User is logged in");
+            return NavConfigScreen();
           }
           //user is not logged in so redirect to login
           return const StartScreen();

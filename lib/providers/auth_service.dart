@@ -1,3 +1,4 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -6,6 +7,7 @@ import 'package:forrent/dataModels/user_model.dart';
 class AuthService extends ChangeNotifier {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
   UserModel? theUser;
 
   String? phoneNumber;
@@ -62,8 +64,6 @@ class AuthService extends ChangeNotifier {
     PhoneAuthCredential _credential = PhoneAuthProvider.credential(
         verificationId: verificationID!, smsCode: smsCode!);
 
-    debugPrint('before');
-
     UserCredential _userCredential =
         await _auth.signInWithCredential(_credential);
 
@@ -87,6 +87,47 @@ class AuthService extends ChangeNotifier {
         .set(gUser.toMap(), SetOptions(merge: true));
 
     setTheGUser(gUser);
+  }
+
+  //singin anonymously
+  Future<void> signInAnonymously() async {
+    try {
+      UserCredential _userCredential = await _auth.signInAnonymously();
+      late UserModel _gUser;
+      await _firebaseMessaging.getToken().then((token) {
+        _gUser = UserModel(
+            email: '',
+            username: 'Guest',
+            id: _userCredential.user!.uid,
+            phone: '',
+            createdAt: DateTime.now(),
+            updatedAt: DateTime.now(),
+            imgurl: '',
+            token: token);
+      });
+
+      await addtheUserToTheDatabase(_gUser);
+    } catch (e) {
+      debugPrint(e.toString());
+    }
+  }
+
+  //sign in with phone number\
+  signInWithPhoneNumber() async {
+    try {
+      _auth.signInWithPhoneNumber(phoneNumber!).then((value) {
+        debugPrint('sign in with phone number');
+      });
+    } catch (e) {
+      debugPrint(e.toString());
+    }
+  }
+
+  //loout the user
+  Future<void> signOut() async {
+    await _auth.signOut();
+    theUser = null;
+    notifyListeners();
   }
 
   // check if the user logged in or not
