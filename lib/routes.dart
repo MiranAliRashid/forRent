@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:forrent/screens/loginScreen/login_screen.dart';
+import 'package:forrent/screens/loginScreen/login_verefication.dart';
 import 'package:forrent/screens/navConfigScreen/nav_config_screen.dart';
 import 'package:forrent/screens/register/register_screen.dart';
 import 'package:forrent/screens/startScreen/start_screen.dart';
@@ -17,6 +18,7 @@ class Routes extends StatelessWidget {
       "/login": (context) => LoginScreen(),
       "/register": (context) => RegisterScreen(),
       "/verifPyhoneNumber": (context) => VerifyPhoneNumber(),
+      "/Loginvirefication": (context) => LoginVirefication(),
     });
   }
 }

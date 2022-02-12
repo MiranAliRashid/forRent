@@ -77,6 +77,7 @@ class _StartScreenState extends State<StartScreen> {
                     },
                     text: "register here!",
                     textColor: const Color.fromARGB(255, 62, 128, 177),
+                    underline: true,
                   ),
                 ],
               ),

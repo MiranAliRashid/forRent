@@ -42,7 +42,8 @@ general_button_withoutshasow(
     {required onpressed,
     required String text,
     Color? backgroundColor,
-    Color? textColor}) {
+    Color? textColor,
+    bool underline = false}) {
   backgroundColor ??= Colors.transparent;
   textColor ??= Colors.black;
 
@@ -56,6 +57,8 @@ general_button_withoutshasow(
         style: TextStyle(
           color: textColor,
           fontSize: 20,
+          decoration:
+              underline ? TextDecoration.underline : TextDecoration.none,
         ),
       ),
     ),

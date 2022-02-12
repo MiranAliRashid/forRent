@@ -183,7 +183,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             phoneNumber =
                                 cuntrycode + _phoneNumberController.text.trim();
 
-                            if (username.isNotEmpty && phoneNumber.isNotEmpty) {
+                            if (username.isNotEmpty &&
+                                _phoneNumberController.text.isNotEmpty) {
                               Provider.of<AuthService>(context, listen: false)
                                   .setTheUserName(username);
                               Provider.of<AuthService>(context, listen: false)

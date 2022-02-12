@@ -66,18 +66,29 @@ class AuthService extends ChangeNotifier {
 
     UserCredential _userCredential =
         await _auth.signInWithCredential(_credential);
-
-    UserModel _gUser = UserModel(
-        email: '',
-        username: userName ?? 'no name',
-        id: _userCredential.user!.uid,
-        phone: _userCredential.user!.phoneNumber!,
-        createdAt: DateTime.now(),
-        updatedAt: DateTime.now(),
-        imgurl: '',
-        token: '');
+    late UserModel _gUser;
+    await _firebaseMessaging.getToken().then((token) {
+      _gUser = UserModel(
+          email: '',
+          username: userName,
+          id: _userCredential.user!.uid,
+          phone: _userCredential.user!.phoneNumber!,
+          createdAt: DateTime.now(),
+          updatedAt: DateTime.now(),
+          imgurl: '',
+          token: token);
+    });
 
     await addtheUserToTheDatabase(_gUser);
+  }
+
+  verifySmsCodeLogin() async {
+// returns a user credential
+    PhoneAuthCredential _credential = PhoneAuthProvider.credential(
+        verificationId: verificationID!, smsCode: smsCode!);
+
+    UserCredential _userCredential =
+        await _auth.signInWithCredential(_credential);
   }
 
   Future<void> addtheUserToTheDatabase(UserModel gUser) async {
@@ -107,17 +118,6 @@ class AuthService extends ChangeNotifier {
       });
 
       await addtheUserToTheDatabase(_gUser);
-    } catch (e) {
-      debugPrint(e.toString());
-    }
-  }
-
-  //sign in with phone number\
-  signInWithPhoneNumber() async {
-    try {
-      _auth.signInWithPhoneNumber(phoneNumber!).then((value) {
-        debugPrint('sign in with phone number');
-      });
     } catch (e) {
       debugPrint(e.toString());
     }
