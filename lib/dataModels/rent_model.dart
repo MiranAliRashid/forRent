@@ -9,7 +9,7 @@ class RentModel {
   String id;
   String imgurl;
   String rentprice;
-  DateTime postdate;
+  Timestamp postdate;
   RentModel({
     required this.address,
     required this.city,
@@ -27,7 +27,7 @@ class RentModel {
     String? id,
     String? imgurl,
     String? rentprice,
-    DateTime? postdate,
+    Timestamp? postdate,
   }) {
     return RentModel(
       address: address ?? this.address,
@@ -48,7 +48,7 @@ class RentModel {
       'id': id,
       'imgurl': imgurl,
       'rentprice': rentprice,
-      'postdate': postdate.millisecondsSinceEpoch,
+      'postdate': postdate,
     };
   }
 
@@ -60,7 +60,7 @@ class RentModel {
       id: map['id'] ?? '',
       imgurl: map['imgurl'] ?? '',
       rentprice: map['rentprice'] ?? '',
-      postdate: DateTime.fromMillisecondsSinceEpoch(map['postdate'] ?? 0),
+      postdate: map['postdate'] ?? '',
     );
   }
 

@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:forrent/dataModels/rent_model.dart';
 import 'package:forrent/services/rent_services.dart';
+import 'package:intl/intl.dart';
 
 class UserRentPosts extends StatefulWidget {
   const UserRentPosts({Key? key}) : super(key: key);
@@ -19,7 +20,7 @@ class _UserRentPostsState extends State<UserRentPosts> {
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.add),
         onPressed: () {
-          Navigator.pushNamed(context, '/add-rent-post');
+          Navigator.pushNamed(context, '/addrentpost');
         },
       ),
       body: Container(
@@ -48,7 +49,8 @@ class _UserRentPostsState extends State<UserRentPosts> {
                 itemBuilder: (BuildContext context, int index) {
                   return ListTile(
                     title: Text(snapshot.data![index].city),
-                    subtitle: Text(snapshot.data![index].postdate.toString()),
+                    subtitle: Text(DateFormat('dd-MM-yyyy')
+                        .format(snapshot.data![index].postdate.toDate())),
                   );
                 },
               );
