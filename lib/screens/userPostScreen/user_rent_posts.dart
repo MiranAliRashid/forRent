@@ -2,7 +2,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:forrent/dataModels/rent_model.dart';
 import 'package:forrent/services/rent_services.dart';
-import 'package:intl/intl.dart';
+import 'package:forrent/widgets/buttons.dart';
+import 'package:forrent/widgets/posts.dart';
 
 class UserRentPosts extends StatefulWidget {
   const UserRentPosts({Key? key}) : super(key: key);
@@ -14,50 +15,121 @@ class UserRentPosts extends StatefulWidget {
 class _UserRentPostsState extends State<UserRentPosts> {
   final RentServices _rentServices = RentServices();
   final FirebaseAuth _auth = FirebaseAuth.instance;
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        child: const Icon(Icons.add),
-        onPressed: () {
-          Navigator.pushNamed(context, '/addrentpost');
-        },
-      ),
-      body: Container(
-        color: Colors.amber,
-        child: StreamBuilder<List<RentModel>>(
-          stream: _rentServices
-              .getStreamOfRentPostsByUserId(_auth.currentUser!.uid),
-          builder: (context, snapshot) {
-            if (!snapshot.hasData) {
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
-            } else if (snapshot.hasError) {
-              return Text('the error is : ${snapshot.error}');
-            } else if (snapshot.data == null) {
-              return const Center(
-                child: Text("you don't post anything yet"),
-              );
-            } else if (snapshot.data!.isEmpty) {
-              return const Center(
-                child: Text("you don't post anything yet"),
-              );
-            } else {
-              return ListView.builder(
-                itemCount: snapshot.data!.length,
-                itemBuilder: (BuildContext context, int index) {
-                  return ListTile(
-                    title: Text(snapshot.data![index].city),
-                    subtitle: Text(DateFormat('dd-MM-yyyy')
-                        .format(snapshot.data![index].postdate.toDate())),
-                  );
-                },
-              );
-            }
-          },
+    if (_auth.currentUser!.phoneNumber != null) {
+      return Scaffold(
+        appBar: AppBar(
+          backgroundColor: const Color.fromARGB(255, 239, 248, 248),
+          foregroundColor: const Color.fromARGB(255, 62, 128, 177),
+          centerTitle: true,
+          elevation: 0,
+          title: const Text('My Rent Posts'),
         ),
-      ),
-    );
+        floatingActionButton: SizedBox(
+          width: 80,
+          height: 40,
+          child: FloatingActionButton(
+            shape:
+                BeveledRectangleBorder(borderRadius: BorderRadius.circular(10)),
+            backgroundColor: const Color.fromARGB(255, 62, 128, 177),
+            child: const Icon(Icons.add),
+            onPressed: () {
+              Navigator.pushNamed(context, '/addrentpost');
+            },
+          ),
+        ),
+        body: Container(
+          color: const Color.fromARGB(255, 247, 247, 247),
+          child: StreamBuilder<List<RentModel>>(
+            stream: _rentServices
+                .getStreamOfRentPostsByUserId(_auth.currentUser!.uid),
+            builder: (context, snapshot) {
+              if (!snapshot.hasData) {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              } else if (snapshot.hasError) {
+                return Text('the error is : ${snapshot.error}');
+              } else if (snapshot.data == null) {
+                return const Center(
+                  child: Text("you don't post anything yet"),
+                );
+              } else if (snapshot.data!.isEmpty) {
+                return const Center(
+                  child: Text("you don't post anything yet"),
+                );
+              } else {
+                return ListView.builder(
+                  itemCount: snapshot.data!.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    // return ListTile(
+                    //   title: Text(snapshot.data![index].city),
+                    //   subtitle: Text(DateFormat('dd-MM-yyyy')
+                    //       .format(snapshot.data![index].postdate.toDate())),
+                    // );
+                    return postCard(snapshot.data, index);
+                  },
+                );
+              }
+            },
+          ),
+        ),
+      );
+    } else {
+      return Scaffold(
+        appBar: AppBar(
+          backgroundColor: const Color.fromARGB(255, 239, 248, 248),
+          foregroundColor: const Color.fromARGB(255, 62, 128, 177),
+          centerTitle: true,
+          elevation: 0,
+          title: const Text('ForRent'),
+        ),
+        body: Container(
+          color: const Color.fromARGB(255, 216, 216, 216),
+          child: Center(
+            child: Card(
+                elevation: 1,
+                child: SizedBox(
+                  width: 300,
+                  height: 300,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Text(
+                        'You don\'t have an account \n Please Register',
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      const Text(
+                          "for you to able to post you have to register"),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(20),
+                        child: general_button(
+                          text: 'Register',
+                          onpressed: () {
+                            Navigator.pushNamed(context, '/register');
+                          },
+                          backgroundColor:
+                              const Color.fromARGB(255, 136, 191, 233),
+                        ),
+                      )
+                    ],
+                  ),
+                )),
+          ),
+        ),
+      );
+    }
   }
 }
