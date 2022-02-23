@@ -82,14 +82,14 @@ class AuthService extends ChangeNotifier {
     await addtheUserToTheDatabase(_gUser);
   }
 
-  verifySmsCodeLogin() async {
-// returns a user credential
-    PhoneAuthCredential _credential = PhoneAuthProvider.credential(
-        verificationId: verificationID!, smsCode: smsCode!);
+//   verifySmsCodeLogin() async {
+// // returns a user credential
+//     PhoneAuthCredential _credential = PhoneAuthProvider.credential(
+//         verificationId: verificationID!, smsCode: smsCode!);
 
-    UserCredential _userCredential =
-        await _auth.signInWithCredential(_credential);
-  }
+//     UserCredential _userCredential =
+//         await _auth.signInWithCredential(_credential);
+//   }
 
   Future<void> addtheUserToTheDatabase(UserModel gUser) async {
     await _firestore
@@ -123,7 +123,7 @@ class AuthService extends ChangeNotifier {
     }
   }
 
-  //loout the user
+  //logout the user
   Future<void> signOut() async {
     await _auth.signOut();
     theUser = null;
