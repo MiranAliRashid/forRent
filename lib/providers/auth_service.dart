@@ -78,7 +78,7 @@ class AuthService extends ChangeNotifier {
           imgurl: '',
           token: token);
     });
-
+    theUser = _gUser;
     await addtheUserToTheDatabase(_gUser);
   }
 
@@ -121,6 +121,12 @@ class AuthService extends ChangeNotifier {
     } catch (e) {
       debugPrint(e.toString());
     }
+  }
+
+  //get user form usercollection by id
+  Future<UserModel> getUserById(String id) async {
+    return await _firestore.collection('users').doc(id).get().then(
+        (value) => UserModel.fromMap(value.data() as Map<String, dynamic>));
   }
 
   //logout the user

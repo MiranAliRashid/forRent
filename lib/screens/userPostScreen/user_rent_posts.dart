@@ -69,7 +69,59 @@ class _UserRentPostsState extends State<UserRentPosts> {
                     //   subtitle: Text(DateFormat('dd-MM-yyyy')
                     //       .format(snapshot.data![index].postdate.toDate())),
                     // );
-                    return postCard(snapshot.data, index);
+                    return Stack(
+                      fit: StackFit.values[2],
+                      children: [
+                        postCard(snapshot.data, index),
+                        Positioned(
+                          top: 15,
+                          right: 15,
+                          child: Container(
+                            margin: const EdgeInsets.all(5),
+
+                            alignment: Alignment.bottomCenter,
+                            height: 40,
+
+                            decoration: BoxDecoration(
+                              color: Color.fromARGB(120, 0, 0, 0),
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            //make a dropbdown menu to delete and edit
+                            child: DropdownButton(
+                              alignment: Alignment.bottomCenter,
+                              underline: Container(
+                                margin: const EdgeInsets.only(top: 60),
+                                child: Icon(
+                                  Icons.more_horiz,
+                                  color: Colors.white,
+                                  size: 30,
+                                ),
+                              ),
+                              iconSize: 0.0,
+                              items: const [
+                                DropdownMenuItem(
+                                  child: const Text('Edit'),
+                                  value: 'edit',
+                                ),
+                                DropdownMenuItem(
+                                  child: const Text('Delete'),
+                                  value: 'delete',
+                                ),
+                              ],
+                              onChanged: (value) {
+                                if (value == 'edit') {
+                                  //  Navigator.pushNamed(context, '/editrentpost', arguments: snapshot.data[index]);
+                                } else if (value == 'delete') {
+                                  _rentServices.deleteRentPost(
+                                      _auth.currentUser!.uid,
+                                      snapshot.data![index].id);
+                                }
+                              },
+                            ),
+                          ),
+                        ),
+                      ],
+                    );
                   },
                 );
               }

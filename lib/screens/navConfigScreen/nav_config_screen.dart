@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:forrent/providers/auth_service.dart';
 import 'package:forrent/screens/allPostScreen/all_post_screen.dart';
+import 'package:forrent/screens/profileScreen/profile.dart';
 import 'package:forrent/screens/userPostScreen/user_rent_posts.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:provider/provider.dart';
@@ -20,9 +21,7 @@ class _NavConfigScreenState extends State<NavConfigScreen> {
   static List<Widget> _widgetOptions = <Widget>[
     UserRentPosts(),
     AllPostScreen(),
-    Text(
-      'Index 2: School',
-    ),
+    UserProfile(),
   ];
 
   void _onItemTapped(int index) {

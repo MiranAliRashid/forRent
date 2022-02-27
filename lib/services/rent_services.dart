@@ -23,16 +23,33 @@ class RentServices {
 
   //get stream all rents in users post collectiongroup order by postdate
 
-  Stream<List<RentModel>> getStreamOfRentPosts() {
-    return _firebaseFirestore.collectionGroup('rent_posts').snapshots().map(
-          (docValue) => docValue.docs
-              .map(
-                (e) => RentModel.fromMap(
-                  e.data(),
-                ),
-              )
-              .toList(),
-        );
+  Stream<List<RentModel>> getStreamOfRentPosts({String? city}) {
+    if (city != null) {
+      return _firebaseFirestore
+          .collectionGroup('rent_posts')
+          .where('city', isEqualTo: city)
+          .orderBy('postdate')
+          .snapshots()
+          .map(
+            (docValue) => docValue.docs
+                .map(
+                  (e) => RentModel.fromMap(
+                    e.data(),
+                  ),
+                )
+                .toList(),
+          );
+    } else {
+      return _firebaseFirestore.collectionGroup('rent_posts').snapshots().map(
+            (docValue) => docValue.docs
+                .map(
+                  (e) => RentModel.fromMap(
+                    e.data(),
+                  ),
+                )
+                .toList(),
+          );
+    }
   }
 
   //add new rent post to users collection then a document collection rent_posts by user_id
@@ -45,5 +62,15 @@ class RentServices {
     Map<String, dynamic> therentModelMap = rentModel.toMap();
     therentModelMap['id'] = theDocReference.id;
     await theDocReference.set(therentModelMap);
+  }
+
+  //delete from rent_posts collection by id
+  deleteRentPost(String userId, String rentId) async {
+    await _firebaseFirestore
+        .collection('users')
+        .doc(userId)
+        .collection('rent_posts')
+        .doc(rentId)
+        .delete();
   }
 }

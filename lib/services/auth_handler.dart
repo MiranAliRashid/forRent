@@ -10,6 +10,7 @@ class AuthHandlerScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: FutureBuilder(
         future: Provider.of<AuthService>(context, listen: true).isLoggedIn(),
         builder: (context, snapshot) {

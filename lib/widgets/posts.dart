@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 
 import '../dataModels/rent_model.dart';
+import 'package:intl/intl.dart';
+
+var formatter = NumberFormat('###,000');
 
 Widget postCard(List<RentModel>? data, int index) {
   return Container(
@@ -79,7 +82,7 @@ Widget postCard(List<RentModel>? data, int index) {
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.w300),
               ),
               Text(
-                "Price: " + data[index].rentprice,
+                formatter.format(int.parse(data[index].rentprice)) + " IQD",
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.w400),
               ),
             ],
