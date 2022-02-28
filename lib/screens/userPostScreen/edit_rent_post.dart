@@ -12,29 +12,47 @@ import 'package:forrent/widgets/buttons.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
-class AddRentPost extends StatefulWidget {
-  const AddRentPost({Key? key}) : super(key: key);
-
+class EditRentPost extends StatefulWidget {
+  const EditRentPost({Key? key, required this.mypost}) : super(key: key);
+  final RentModel mypost;
   @override
-  State<AddRentPost> createState() => _AddRentPostState();
+  State<EditRentPost> createState() => _AddRentPostState();
 }
 
-class _AddRentPostState extends State<AddRentPost> {
+class _AddRentPostState extends State<EditRentPost> {
   final ImagePicker _imagePicker = ImagePicker();
   XFile? _selectedProfileImg;
   final FirebaseStorage _firebaseStorage = FirebaseStorage.instance;
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
   String? _theDlUrl;
+  String? _oldImageUrl;
 
   // Initial Selected Value
   String dropdownvalue = 'City';
   String? username;
+  String? userid;
+  String? postid;
   // List of items in our dropdown menu
   var items = ['City', 'Sulaimaniyah', 'Hawler', 'Karkwk', 'Dhok', 'Halabja'];
   final TextEditingController _addressController = TextEditingController();
   final TextEditingController _priceController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _addressController.text = widget.mypost.address;
+    _priceController.text = widget.mypost.rentprice;
+    _descriptionController.text = widget.mypost.discreption;
+    dropdownvalue = widget.mypost.city;
+    username = widget.mypost.username;
+    _theDlUrl = widget.mypost.imgurl;
+    _oldImageUrl = widget.mypost.imgurl;
+    userid = widget.mypost.userid;
+    postid = widget.mypost.id;
+  }
+
   @override
   Widget build(BuildContext context) {
     User? theUser = _auth.currentUser;
@@ -45,7 +63,7 @@ class _AddRentPostState extends State<AddRentPost> {
         foregroundColor: const Color.fromARGB(255, 62, 128, 177),
         centerTitle: true,
         elevation: 0,
-        title: const Text('Add Rent Post'),
+        title: const Text('Edit Rent Post'),
       ),
       body: Container(
         color: const Color.fromARGB(255, 239, 248, 248),
@@ -61,7 +79,7 @@ class _AddRentPostState extends State<AddRentPost> {
                       width: 200,
                       child: const Center(
                         child: Text(
-                          'No Image Selected',
+                          'chnage post image',
                           style: TextStyle(
                             fontSize: 20,
                             fontWeight: FontWeight.bold,
@@ -158,26 +176,23 @@ class _AddRentPostState extends State<AddRentPost> {
                           await uploadTheSelectedFile(theUser!.uid);
                           RentServices _rentServices = RentServices();
 
-                          Provider.of<AuthService>(context, listen: false)
-                              .getUserById(theUser.uid)
-                              .then((value) async {
-                            username = value.username;
-                            RentModel newpost = RentModel(
-                              address: _addressController.text,
-                              discreption: _descriptionController.text,
-                              rentprice: _priceController.text,
-                              city: dropdownvalue,
-                              imgurl: _theDlUrl!,
-                              postdate: Timestamp.now(),
-                              id: "",
-                              userid: theUser.uid,
-                              username: username!,
-                            );
-                            await _rentServices
-                                .addNewRentPost(theUser.uid, newpost)
-                                .then((value) {
-                              Navigator.pop(context);
-                            });
+                          RentModel editedPost = RentModel(
+                            address: _addressController.text,
+                            discreption: _descriptionController.text,
+                            rentprice: _priceController.text,
+                            city: dropdownvalue,
+                            imgurl: _theDlUrl!,
+                            postdate: Timestamp.now(),
+                            id: postid!,
+                            userid: userid!,
+                            username: username!,
+                          );
+                          await _rentServices
+                              .updateRentPost(
+                                  rentModel: editedPost,
+                                  oldImageurl: _oldImageUrl)
+                              .then((value) {
+                            Navigator.pop(context);
                           });
                         } else {
                           ScaffoldMessenger.of(context).showSnackBar(
@@ -196,14 +211,26 @@ class _AddRentPostState extends State<AddRentPost> {
                         );
                       }
                     } else {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                            backgroundColor: Color.fromARGB(255, 255, 125, 125),
-                            content: Text('please upload an image')),
+                      RentServices _rentServices = RentServices();
+                      RentModel editedPost = RentModel(
+                        address: _addressController.text,
+                        discreption: _descriptionController.text,
+                        rentprice: _priceController.text,
+                        city: dropdownvalue,
+                        imgurl: _theDlUrl!,
+                        postdate: Timestamp.now(),
+                        id: postid!,
+                        userid: userid!,
+                        username: username!,
                       );
+                      await _rentServices
+                          .updateRentPost(rentModel: editedPost)
+                          .then((value) {
+                        Navigator.pop(context);
+                      });
                     }
                   },
-                  text: 'Add Post'),
+                  text: 'Update Post'),
             ],
           ),
         ),

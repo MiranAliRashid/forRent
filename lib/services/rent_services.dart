@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:forrent/dataModels/rent_model.dart';
 
 class RentServices {
@@ -66,11 +67,45 @@ class RentServices {
 
   //delete from rent_posts collection by id
   deleteRentPost(String userId, String rentId) async {
-    await _firebaseFirestore
+    //get imgurl form rent_posts collection
+    final theDocReference = _firebaseFirestore
         .collection('users')
         .doc(userId)
         .collection('rent_posts')
-        .doc(rentId)
-        .delete();
+        .doc(rentId);
+    final therentModelMap = await theDocReference.get();
+    final imgUrl = therentModelMap.data()!['imgurl'];
+
+    //delete image from firabse storage
+    FirebaseStorage.instance.refFromURL(imgUrl).delete().then((value) async {
+      await _firebaseFirestore
+          .collection('users')
+          .doc(userId)
+          .collection('rent_posts')
+          .doc(rentId)
+          .delete();
+    });
+  }
+
+  //update rent post by rentmodel
+  updateRentPost({required RentModel rentModel, String? oldImageurl}) async {
+    if (oldImageurl == null) {
+      final theDocReference = _firebaseFirestore
+          .collection('users')
+          .doc(rentModel.userid)
+          .collection('rent_posts')
+          .doc(rentModel.id);
+      Map<String, dynamic> therentModelMap = rentModel.toMap();
+      await theDocReference.update(therentModelMap);
+    } else {
+      final theDocReference = _firebaseFirestore
+          .collection('users')
+          .doc(rentModel.userid)
+          .collection('rent_posts')
+          .doc(rentModel.id);
+      Map<String, dynamic> therentModelMap = rentModel.toMap();
+      await theDocReference.update(therentModelMap);
+      FirebaseStorage.instance.refFromURL(oldImageurl).delete();
+    }
   }
 }

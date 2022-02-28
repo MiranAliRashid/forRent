@@ -10,6 +10,8 @@ class RentModel {
   String imgurl;
   String rentprice;
   Timestamp postdate;
+  String userid;
+  String username;
   RentModel({
     required this.address,
     required this.city,
@@ -18,6 +20,8 @@ class RentModel {
     required this.imgurl,
     required this.rentprice,
     required this.postdate,
+    required this.userid,
+    required this.username,
   });
 
   RentModel copyWith({
@@ -28,6 +32,8 @@ class RentModel {
     String? imgurl,
     String? rentprice,
     Timestamp? postdate,
+    String? userid,
+    String? username,
   }) {
     return RentModel(
       address: address ?? this.address,
@@ -37,6 +43,8 @@ class RentModel {
       imgurl: imgurl ?? this.imgurl,
       rentprice: rentprice ?? this.rentprice,
       postdate: postdate ?? this.postdate,
+      userid: userid ?? this.userid,
+      username: username ?? this.username,
     );
   }
 
@@ -49,6 +57,8 @@ class RentModel {
       'imgurl': imgurl,
       'rentprice': rentprice,
       'postdate': postdate,
+      'userid': userid,
+      'username': username,
     };
   }
 
@@ -61,6 +71,8 @@ class RentModel {
       imgurl: map['imgurl'] ?? '',
       rentprice: map['rentprice'] ?? '',
       postdate: map['postdate'] ?? '',
+      userid: map['userid'] ?? '',
+      username: map['username'] ?? '',
     );
   }
 
@@ -71,7 +83,7 @@ class RentModel {
 
   @override
   String toString() {
-    return 'RentModel(address: $address, city: $city, discreption: $discreption, id: $id, imgurl: $imgurl, rentprice: $rentprice, postdate: $postdate)';
+    return 'RentModel(address: $address, city: $city, discreption: $discreption, id: $id, imgurl: $imgurl, rentprice: $rentprice, postdate: $postdate, userid: $userid, username: $username)';
   }
 
   @override
@@ -85,7 +97,9 @@ class RentModel {
         other.id == id &&
         other.imgurl == imgurl &&
         other.rentprice == rentprice &&
-        other.postdate == postdate;
+        other.postdate == postdate &&
+        other.userid == userid &&
+        other.username == username;
   }
 
   @override
@@ -96,6 +110,8 @@ class RentModel {
         id.hashCode ^
         imgurl.hashCode ^
         rentprice.hashCode ^
-        postdate.hashCode;
+        postdate.hashCode ^
+        userid.hashCode ^
+        username.hashCode;
   }
 }

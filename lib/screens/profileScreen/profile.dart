@@ -1,7 +1,11 @@
+import 'dart:io';
+
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:forrent/dataModels/user_model.dart';
 import 'package:forrent/widgets/buttons.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
 import '../../providers/auth_service.dart';
@@ -15,12 +19,16 @@ class UserProfile extends StatefulWidget {
 
 class _UserProfileState extends State<UserProfile> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseStorage _firebaseStorage = FirebaseStorage.instance;
 
+  String? _theDlUrl;
+  final ImagePicker _imagePicker = ImagePicker();
+  XFile? _selectedProfileImg;
   @override
   Widget build(BuildContext context) {
     // UserModel user = Provider.of<AuthService>(context).theUser!;
     if (_auth.currentUser == null) {
-      return Scaffold(
+      return const Scaffold(
         body: Center(
           child: Text('No user found'),
         ),
@@ -82,23 +90,19 @@ class _UserProfileState extends State<UserProfile> {
                         const SizedBox(
                           height: 20,
                         ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.only(left: 8.0),
-                              child: Text("email"),
-                            ),
-                          ],
-                        ),
                         const SizedBox(
                           height: 20,
                         ),
                         Row(
                           children: [
-                            Padding(
+                            const Padding(
                               padding: const EdgeInsets.only(left: 8.0),
-                              child: Text("phone"),
+                              child: Text("phone : "),
+                            ),
+                            Text(
+                              snapshot.data.phone,
+                              style: const TextStyle(
+                                  fontSize: 20, fontWeight: FontWeight.w400),
                             ),
                           ],
                         ),
@@ -127,21 +131,42 @@ class _UserProfileState extends State<UserProfile> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Padding(
-                        padding: const EdgeInsets.only(top: 30.0),
-                        child: CircleAvatar(
-                          backgroundColor:
-                              const Color.fromARGB(255, 62, 128, 177),
-                          radius: 80,
-                          child: Text(
-                            "image",
-                            style: TextStyle(
-                              fontSize: 30,
-                              color: Colors.white,
+                      Stack(
+                        alignment: Alignment.bottomCenter,
+                        children: [
+                          const Padding(
+                            padding: const EdgeInsets.only(top: 30.0),
+                            child: CircleAvatar(
+                              backgroundColor:
+                                  const Color.fromARGB(255, 62, 128, 177),
+                              radius: 80,
+                              child: Text(
+                                "image",
+                                style: TextStyle(
+                                  fontSize: 30,
+                                  color: Colors.white,
+                                ),
+                              ),
                             ),
                           ),
-                        ),
-                      ),
+                          TextButton(
+                            onPressed: () async {
+                              _selectedProfileImg = await _imagePicker
+                                  .pickImage(source: ImageSource.gallery);
+                            },
+                            child: Text("Edit"),
+                            style: ButtonStyle(
+                              backgroundColor: MaterialStateProperty.all<Color>(
+                                  Color.fromARGB(105, 0, 0, 0)),
+                              shape: MaterialStateProperty.all<
+                                      RoundedRectangleBorder>(
+                                  RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12.0),
+                              )),
+                            ),
+                          )
+                        ],
+                      )
                     ],
                   ),
                 ],
@@ -155,5 +180,21 @@ class _UserProfileState extends State<UserProfile> {
         ),
       );
     }
+  }
+
+  Future<String?> uploadTheSelectedFile(String uid) async {
+    //selected image as file
+    File _theImageFile = File(_selectedProfileImg!.path);
+    String name = _theImageFile.path.split('/').last;
+
+    //upload the selected image
+    await _firebaseStorage
+        .ref()
+        .child('users/$uid/$name')
+        .putFile(_theImageFile)
+        .then((p) async {
+      _theDlUrl = await p.ref.getDownloadURL();
+    });
+    return _theDlUrl;
   }
 }

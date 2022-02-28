@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:forrent/dataModels/rent_model.dart';
+import 'package:forrent/screens/userPostScreen/edit_rent_post.dart';
 import 'package:forrent/services/rent_services.dart';
 import 'package:forrent/widgets/buttons.dart';
 import 'package:forrent/widgets/posts.dart';
@@ -110,7 +111,12 @@ class _UserRentPostsState extends State<UserRentPosts> {
                               ],
                               onChanged: (value) {
                                 if (value == 'edit') {
-                                  //  Navigator.pushNamed(context, '/editrentpost', arguments: snapshot.data[index]);
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => EditRentPost(
+                                                mypost: snapshot.data![index],
+                                              )));
                                 } else if (value == 'delete') {
                                   _rentServices.deleteRentPost(
                                       _auth.currentUser!.uid,
