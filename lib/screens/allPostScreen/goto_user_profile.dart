@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:forrent/widgets/buttons.dart';
 import 'package:provider/provider.dart';
 
 import '../../providers/auth_service.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class VisiteProfile extends StatefulWidget {
   VisiteProfile({Key? key, required this.userId}) : super(key: key);
@@ -97,6 +99,15 @@ class _VisiteProfileState extends State<VisiteProfile> {
                           const SizedBox(
                             height: 100,
                           ),
+                          Center(
+                            child: general_button(
+                                onpressed: () {
+                                  _makePhoneCall(snapshot.data.phone);
+                                },
+                                text: "call",
+                                backgroundColor:
+                                    Color.fromARGB(255, 159, 205, 236)),
+                          )
                         ],
                       ),
                     ),
@@ -149,5 +160,17 @@ class _VisiteProfileState extends State<VisiteProfile> {
         ),
       ),
     );
+  }
+
+  Future<void> _makePhoneCall(String phoneNumber) async {
+    // Use `Uri` to ensure that `phoneNumber` is properly URL-encoded.
+    // Just using 'tel:$phoneNumber' would create invalid URLs in some cases,
+    // such as spaces in the input, which would cause `launch` to fail on some
+    // platforms.
+    final Uri launchUri = Uri(
+      scheme: 'tel',
+      path: phoneNumber,
+    );
+    await launch(launchUri.toString());
   }
 }
