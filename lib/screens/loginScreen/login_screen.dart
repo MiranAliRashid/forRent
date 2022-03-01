@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:forrent/providers/auth_service.dart';
 import 'package:forrent/widgets/buttons.dart';
@@ -12,6 +13,7 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  FirebaseAuth _auth = FirebaseAuth.instance;
   @override
   String cuntryCode = '+964';
   TextEditingController _phoneNumberController = TextEditingController();

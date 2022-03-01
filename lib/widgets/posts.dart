@@ -1,11 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:forrent/dataModels/user_model.dart';
+import 'package:forrent/providers/auth_service.dart';
+import 'package:forrent/screens/allPostScreen/goto_user_profile.dart';
+import 'package:provider/provider.dart';
 
 import '../dataModels/rent_model.dart';
 import 'package:intl/intl.dart';
 
 var formatter = NumberFormat('###,000');
 
-Widget postCard(List<RentModel>? data, int index) {
+Widget postCard(List<RentModel>? data, int index, BuildContext context) {
+  //get the username from user collection
+
   return Container(
     decoration: BoxDecoration(
       boxShadow: const [
@@ -116,7 +122,16 @@ Widget postCard(List<RentModel>? data, int index) {
                     Text(data[index].username),
                   ],
                 ),
-                TextButton(onPressed: () {}, child: Text("User Profile"))
+                TextButton(
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => VisiteProfile(
+                                    userId: data[index].userid,
+                                  )));
+                    },
+                    child: Text("User Profile"))
               ],
             ),
           ),

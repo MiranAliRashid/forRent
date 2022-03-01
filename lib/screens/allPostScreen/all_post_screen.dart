@@ -75,7 +75,7 @@ class _UserRentPostsState extends State<AllPostScreen> {
                   //   subtitle: Text(DateFormat('dd-MM-yyyy')
                   //       .format(snapshot.data![index].postdate.toDate())),
                   // );
-                  return postCard(snapshot.data, index);
+                  return postCard(snapshot.data, index, context);
                 },
               );
             }

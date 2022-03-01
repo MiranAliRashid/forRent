@@ -6,12 +6,13 @@ general_button(
     {required onpressed,
     required String text,
     Color? backgroundColor,
-    Color? textColor}) {
+    Color? textColor,
+    double? width}) {
   backgroundColor ??= Colors.white;
   textColor ??= Colors.black;
 
   return Container(
-    width: 300,
+    width: width ?? 300,
     height: 50,
     decoration: BoxDecoration(
       color: backgroundColor,

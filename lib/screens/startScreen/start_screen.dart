@@ -14,6 +14,7 @@ class _StartScreenState extends State<StartScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: Container(
         color: const Color.fromARGB(255, 239, 248, 248),
         alignment: Alignment.center,

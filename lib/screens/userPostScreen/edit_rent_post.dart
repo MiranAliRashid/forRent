@@ -173,7 +173,7 @@ class _AddRentPostState extends State<EditRentPost> {
                         if (_addressController.text.isNotEmpty &&
                             _priceController.text.isNotEmpty &&
                             _descriptionController.text.isNotEmpty) {
-                          await uploadTheSelectedFile(theUser!.uid);
+                          await uploadTheSelectedFile(userid!);
                           RentServices _rentServices = RentServices();
 
                           RentModel editedPost = RentModel(

@@ -1,4 +1,7 @@
+import 'dart:math';
+
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -44,60 +47,79 @@ class AuthService extends ChangeNotifier {
   }
 
   Future<void> verifyPhoneNumber() async {
-    await _auth.verifyPhoneNumber(
-      phoneNumber: phoneNumber!,
-      verificationCompleted: (PhoneAuthCredential credential) {
-        debugPrint('verification completed');
-      },
-      verificationFailed: (FirebaseAuthException e) {
-        debugPrint('failed ${e.toString()}');
-      },
-      codeSent: (String verificationId, int? resendToken) {
-        setTheVerificationID(verificationId);
-      },
-      codeAutoRetrievalTimeout: (String verificationId) {},
-    );
+    try {
+      await _auth.verifyPhoneNumber(
+        phoneNumber: phoneNumber!,
+        verificationCompleted: (PhoneAuthCredential credential) {
+          debugPrint('verification completed');
+        },
+        verificationFailed: (FirebaseAuthException e) {
+          debugPrint('failed ${e.toString()}');
+        },
+        codeSent: (String verificationId, int? resendToken) {
+          setTheVerificationID(verificationId);
+        },
+        codeAutoRetrievalTimeout: (String verificationId) {},
+      );
+    } catch (e) {
+      throw (e.toString());
+    }
   }
 
   verifySmsCode() async {
-// returns a user credential
-    PhoneAuthCredential _credential = PhoneAuthProvider.credential(
-        verificationId: verificationID!, smsCode: smsCode!);
+    try {
+      PhoneAuthCredential _credential = PhoneAuthProvider.credential(
+          verificationId: verificationID!, smsCode: smsCode!);
 
-    UserCredential _userCredential =
-        await _auth.signInWithCredential(_credential);
-    late UserModel _gUser;
-    await _firebaseMessaging.getToken().then((token) {
-      _gUser = UserModel(
-          email: '',
-          username: userName,
-          id: _userCredential.user!.uid,
-          phone: _userCredential.user!.phoneNumber!,
-          createdAt: DateTime.now(),
-          updatedAt: DateTime.now(),
-          imgurl: '',
-          token: token);
-    });
-    theUser = _gUser;
-    await addtheUserToTheDatabase(_gUser);
+      UserCredential _userCredential =
+          await _auth.signInWithCredential(_credential);
+      //check if user is in the user collection
+      DocumentSnapshot _userDoc = await _firestore
+          .collection('users')
+          .doc(_userCredential.user!.uid)
+          .get();
+      if (_userDoc.exists) {
+        //find the user in the database
+        UserModel usertrylogin = await _firestore
+            .collection('users')
+            .doc(_userCredential.user!.uid)
+            .get()
+            .then((value) =>
+                UserModel.fromMap(value.data() as Map<String, dynamic>));
+
+        setTheGUser(usertrylogin);
+      } else {
+        late UserModel _gUser;
+        await _firebaseMessaging.getToken().then((token) {
+          _gUser = UserModel(
+              email: '',
+              username: "user_" + Random().nextInt(1000000).toString(),
+              id: _userCredential.user!.uid,
+              phone: _userCredential.user!.phoneNumber!,
+              createdAt: DateTime.now(),
+              updatedAt: DateTime.now(),
+              imgurl: '',
+              token: token);
+        });
+        theUser = _gUser;
+        await addtheUserToTheDatabase(_gUser);
+      }
+    } catch (e) {
+      throw (e.toString());
+    }
   }
 
-//   verifySmsCodeLogin() async {
-// // returns a user credential
-//     PhoneAuthCredential _credential = PhoneAuthProvider.credential(
-//         verificationId: verificationID!, smsCode: smsCode!);
-
-//     UserCredential _userCredential =
-//         await _auth.signInWithCredential(_credential);
-//   }
-
   Future<void> addtheUserToTheDatabase(UserModel gUser) async {
-    await _firestore
-        .collection('users')
-        .doc(gUser.id)
-        .set(gUser.toMap(), SetOptions(merge: true));
+    try {
+      await _firestore
+          .collection('users')
+          .doc(gUser.id)
+          .set(gUser.toMap(), SetOptions(merge: true));
 
-    setTheGUser(gUser);
+      setTheGUser(gUser);
+    } catch (e) {
+      throw (e.toString());
+    }
   }
 
   //singin anonymously
@@ -119,30 +141,117 @@ class AuthService extends ChangeNotifier {
 
       await addtheUserToTheDatabase(_gUser);
     } catch (e) {
-      debugPrint(e.toString());
+      throw (e.toString());
     }
   }
 
   //get user form usercollection by id
   Future<UserModel> getUserById(String id) async {
-    return await _firestore.collection('users').doc(id).get().then(
-        (value) => UserModel.fromMap(value.data() as Map<String, dynamic>));
+    try {
+      return await _firestore.collection('users').doc(id).get().then(
+          (value) => UserModel.fromMap(value.data() as Map<String, dynamic>));
+    } catch (e) {
+      throw (e.toString());
+    }
+  }
+
+  //update imgurl from user collection by id
+  Future<void> updateProfile(
+      {required String id, String? imgurl, String? username}) async {
+    try {
+      UserModel user = await getUserById(id);
+      if (imgurl != null && username != null) {
+        if (user.imgurl!.isNotEmpty) {
+          FirebaseStorage.instance.refFromURL(user.imgurl!).delete();
+          await _firestore
+              .collection('users')
+              .doc(id)
+              .update({'imgurl': imgurl, 'username': username});
+          //update the username from rent_posts colletion
+          await _firestore
+              .collection('users')
+              .doc(id)
+              .collection("rent_posts")
+              .get()
+              .then((doc) {
+            for (var element in doc.docs) {
+              _firestore
+                  .collection('users')
+                  .doc(id)
+                  .collection("rent_posts")
+                  .doc(element.id)
+                  .update({'username': username});
+            }
+          });
+        } else {
+          await _firestore
+              .collection('users')
+              .doc(id)
+              .update({'imgurl': imgurl, 'username': username});
+        }
+      } else if (imgurl != null && username == null) {
+        if (user.imgurl!.isNotEmpty) {
+          FirebaseStorage.instance.refFromURL(user.imgurl!).delete();
+          await _firestore
+              .collection('users')
+              .doc(id)
+              .update({'imgurl': imgurl});
+        } else {
+          await _firestore
+              .collection('users')
+              .doc(id)
+              .update({'imgurl': imgurl});
+        }
+      } else if (imgurl == null && username != null) {
+        await _firestore
+            .collection('users')
+            .doc(id)
+            .update({'username': username});
+        await _firestore
+            .collection('users')
+            .doc(id)
+            .collection("rent_posts")
+            .get()
+            .then((doc) {
+          for (var element in doc.docs) {
+            _firestore
+                .collection('users')
+                .doc(id)
+                .collection("rent_posts")
+                .doc(element.id)
+                .update({'username': username});
+          }
+        });
+      } else {
+        debugPrint("error on update profile");
+      }
+    } catch (e) {
+      throw (e.toString());
+    }
   }
 
   //logout the user
   Future<void> signOut() async {
-    await _auth.signOut();
-    theUser = null;
-    notifyListeners();
+    try {
+      await _auth.signOut();
+      theUser = null;
+      notifyListeners();
+    } catch (e) {
+      throw (e.toString());
+    }
   }
 
   // check if the user logged in or not
   Future<bool> isLoggedIn() async {
-    final _currentUser = _auth.currentUser;
-    if (_currentUser != null) {
-      return true;
-    } else {
-      return false;
+    try {
+      final _currentUser = _auth.currentUser;
+      if (_currentUser != null) {
+        return true;
+      } else {
+        return false;
+      }
+    } catch (e) {
+      throw (e.toString());
     }
   }
 }

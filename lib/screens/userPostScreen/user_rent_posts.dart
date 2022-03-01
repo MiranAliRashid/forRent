@@ -1,10 +1,12 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:forrent/dataModels/rent_model.dart';
+import 'package:forrent/providers/auth_service.dart';
 import 'package:forrent/screens/userPostScreen/edit_rent_post.dart';
 import 'package:forrent/services/rent_services.dart';
 import 'package:forrent/widgets/buttons.dart';
 import 'package:forrent/widgets/posts.dart';
+import 'package:provider/provider.dart';
 
 class UserRentPosts extends StatefulWidget {
   const UserRentPosts({Key? key}) : super(key: key);
@@ -73,7 +75,7 @@ class _UserRentPostsState extends State<UserRentPosts> {
                     return Stack(
                       fit: StackFit.values[2],
                       children: [
-                        postCard(snapshot.data, index),
+                        postCard(snapshot.data, index, context),
                         Positioned(
                           top: 15,
                           right: 15,
