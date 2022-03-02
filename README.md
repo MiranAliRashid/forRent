@@ -2,12 +2,16 @@
 
 forRent is a flutter project created for the people who look for a place to rent and also for the people 
 who own a place and want to rent it, it helps the user get the place they want easily and at a good price 
+</br>
 features:
-ability to see rent posts.
-ability to make an account.
-ability to add, edit, delete posts.
-ability to change your account.
-Used technologies flutter, firebase, dart programming
+<ul>
+<li>ability to see rent posts.</li>
+<li>ability to make an account.</li>
+<li>ability to add, edit, delete posts.</li>
+<li>ability to change your account.</li>
+</ul>
+
+<h4>Used technologies flutter, firebase, dart programming</h4>
 <p>
 <img src="assets\images\forent1.gif" alt="gif 1"  />
 <img src="assets\images\forent2.gif" alt="gif 2"  />
