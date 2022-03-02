@@ -8,7 +8,10 @@ ability to make an account.
 ability to add, edit, delete posts.
 ability to change your account.
 Used technologies flutter, firebase, dart programming
-![Alt Text](https://drive.google.com/file/d/1BVfgO1fbSl3VWwPiGWUkuN35yop4WztP/view)
+<p>
+<img src="assets\images\forent1.gif" alt="gif 1"  />
+<img src="assets\images\forent2.gif" alt="gif 2"  />
+</p>
 
 ## Getting Started
 
