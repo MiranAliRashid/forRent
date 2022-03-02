@@ -29,19 +29,16 @@ class AuthService extends ChangeNotifier {
   }
 
   void setTheVerificationID(String theVerificationID) {
-    debugPrint(theVerificationID);
     verificationID = theVerificationID;
     notifyListeners();
   }
 
   void setTheUserName(String theUserName) {
-    debugPrint(theUserName);
     userName = theUserName;
     notifyListeners();
   }
 
   void setTheGUser(UserModel theUserModel) {
-    debugPrint(theUserModel.phone);
     theUser = theUserModel;
     notifyListeners();
   }
@@ -50,11 +47,12 @@ class AuthService extends ChangeNotifier {
     try {
       await _auth.verifyPhoneNumber(
         phoneNumber: phoneNumber!,
+        timeout: const Duration(seconds: 120),
         verificationCompleted: (PhoneAuthCredential credential) {
           debugPrint('verification completed');
         },
         verificationFailed: (FirebaseAuthException e) {
-          debugPrint('failed ${e.toString()}');
+          debugPrint('failed ---->${e.toString()}');
         },
         codeSent: (String verificationId, int? resendToken) {
           setTheVerificationID(verificationId);
@@ -66,13 +64,14 @@ class AuthService extends ChangeNotifier {
     }
   }
 
-  verifySmsCode() async {
+  Future<String> verifySmsCode() async {
     try {
       PhoneAuthCredential _credential = PhoneAuthProvider.credential(
           verificationId: verificationID!, smsCode: smsCode!);
 
       UserCredential _userCredential =
           await _auth.signInWithCredential(_credential);
+
       //check if user is in the user collection
       DocumentSnapshot _userDoc = await _firestore
           .collection('users')
@@ -103,9 +102,17 @@ class AuthService extends ChangeNotifier {
         });
         theUser = _gUser;
         await addtheUserToTheDatabase(_gUser);
+        return "success";
       }
+      return "success";
+    } on FirebaseAuthException catch (e) {
+      e.code;
+      if (e.code == 'invalid-verification-code') {
+        return e.code;
+      }
+      return e.code;
     } catch (e) {
-      throw (e.toString());
+      return e.toString();
     }
   }
 

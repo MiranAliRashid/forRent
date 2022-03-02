@@ -27,7 +27,7 @@ class _AddRentPostState extends State<EditRentPost> {
 
   String? _theDlUrl;
   String? _oldImageUrl;
-
+  bool loading = false;
   // Initial Selected Value
   String dropdownvalue = 'City';
   String? username;
@@ -65,176 +65,190 @@ class _AddRentPostState extends State<EditRentPost> {
         elevation: 0,
         title: const Text('Edit Rent Post'),
       ),
-      body: Container(
-        color: const Color.fromARGB(255, 239, 248, 248),
-        alignment: Alignment.center,
-        padding: const EdgeInsets.all(20),
-        child: Form(
-          child: Column(
-            children: [
-              _selectedProfileImg == null
-                  ? Container(
-                      alignment: Alignment.center,
-                      height: 200,
-                      width: 200,
-                      child: const Center(
-                        child: Text(
-                          'chnage post image',
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
+      body: loading == false
+          ? Container(
+              color: const Color.fromARGB(255, 239, 248, 248),
+              alignment: Alignment.center,
+              padding: const EdgeInsets.all(20),
+              child: Form(
+                child: Column(
+                  children: [
+                    _selectedProfileImg == null
+                        ? Container(
+                            alignment: Alignment.center,
+                            height: 200,
+                            width: 200,
+                            child: const Center(
+                              child: Text(
+                                'chnage post image',
+                                style: TextStyle(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                          )
+                        : Container(
+                            height: 200,
+                            width: 200,
+                            decoration: BoxDecoration(
+                              image: DecorationImage(
+                                image: FileImage(
+                                  File(_selectedProfileImg!.path),
+                                ),
+                              ),
+                            ),
                           ),
-                        ),
+                    TextButton(
+                        onPressed: () async {
+                          // add image picker package
+                          _selectedProfileImg = await _imagePicker.pickImage(
+                              source: ImageSource.gallery);
+
+                          setState(() {});
+                          // pick an image from the gallery
+                        },
+                        child: const Text('upload house image')),
+                    DropdownButton(
+                      isExpanded: true,
+                      underline: Container(
+                        height: 1,
+                        color: Colors.black,
                       ),
-                    )
-                  : Container(
-                      height: 200,
-                      width: 200,
-                      decoration: BoxDecoration(
-                        image: DecorationImage(
-                          image: FileImage(
-                            File(_selectedProfileImg!.path),
-                          ),
-                        ),
+                      style: const TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                      ),
+                      // Initial Value
+                      value: dropdownvalue,
+
+                      // Down Arrow Icon
+                      icon: const Icon(Icons.keyboard_arrow_down),
+
+                      // Array list of items
+                      items: items.map((String items) {
+                        return DropdownMenuItem(
+                          value: items,
+                          child: Text(items),
+                        );
+                      }).toList(),
+                      // After selecting the desired option,it will
+                      // change button value to selected value
+                      onChanged: (String? newValue) {
+                        setState(() {
+                          dropdownvalue = newValue!;
+                        });
+                      },
+                    ),
+                    TextFormField(
+                      controller: _addressController,
+                      decoration: const InputDecoration(
+                        border: OutlineInputBorder(),
+                        labelText: 'Address',
                       ),
                     ),
-              TextButton(
-                  onPressed: () async {
-                    // add image picker package
-                    _selectedProfileImg = await _imagePicker.pickImage(
-                        source: ImageSource.gallery);
-
-                    setState(() {});
-                    // pick an image from the gallery
-                  },
-                  child: const Text('upload house image')),
-              DropdownButton(
-                isExpanded: true,
-                underline: Container(
-                  height: 1,
-                  color: Colors.black,
-                ),
-                style: const TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black,
-                ),
-                // Initial Value
-                value: dropdownvalue,
-
-                // Down Arrow Icon
-                icon: const Icon(Icons.keyboard_arrow_down),
-
-                // Array list of items
-                items: items.map((String items) {
-                  return DropdownMenuItem(
-                    value: items,
-                    child: Text(items),
-                  );
-                }).toList(),
-                // After selecting the desired option,it will
-                // change button value to selected value
-                onChanged: (String? newValue) {
-                  setState(() {
-                    dropdownvalue = newValue!;
-                  });
-                },
-              ),
-              TextFormField(
-                controller: _addressController,
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: 'Address',
-                ),
-              ),
-              const SizedBox(height: 10),
-              TextFormField(
-                controller: _descriptionController,
-                maxLines: 4,
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: 'Description',
-                ),
-              ),
-              const SizedBox(height: 10),
-              TextFormField(
-                controller: _priceController,
-                keyboardType: TextInputType.number,
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: 'Rent Price',
-                ),
-              ),
-              const SizedBox(height: 20),
-              general_button(
-                  onpressed: () async {
-                    if (_selectedProfileImg != null) {
-                      if (dropdownvalue != "City") {
-                        if (_addressController.text.isNotEmpty &&
-                            _priceController.text.isNotEmpty &&
-                            _descriptionController.text.isNotEmpty) {
-                          await uploadTheSelectedFile(userid!);
-                          RentServices _rentServices = RentServices();
-
-                          RentModel editedPost = RentModel(
-                            address: _addressController.text,
-                            discreption: _descriptionController.text,
-                            rentprice: _priceController.text,
-                            city: dropdownvalue,
-                            imgurl: _theDlUrl!,
-                            postdate: Timestamp.now(),
-                            id: postid!,
-                            userid: userid!,
-                            username: username!,
-                          );
-                          await _rentServices
-                              .updateRentPost(
-                                  rentModel: editedPost,
-                                  oldImageurl: _oldImageUrl)
-                              .then((value) {
-                            Navigator.pop(context);
+                    const SizedBox(height: 10),
+                    TextFormField(
+                      controller: _descriptionController,
+                      maxLines: 4,
+                      decoration: const InputDecoration(
+                        border: OutlineInputBorder(),
+                        labelText: 'Description',
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    TextFormField(
+                      controller: _priceController,
+                      keyboardType: TextInputType.number,
+                      decoration: const InputDecoration(
+                        border: OutlineInputBorder(),
+                        labelText: 'Rent Price',
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                    general_button(
+                        onpressed: () async {
+                          setState(() {
+                            loading = true;
                           });
-                        } else {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                                backgroundColor:
-                                    Color.fromARGB(255, 255, 125, 125),
-                                content: Text('please fill out the inputs')),
-                          );
-                        }
-                      } else {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                              backgroundColor:
-                                  Color.fromARGB(255, 255, 125, 125),
-                              content: Text('please select a City')),
-                        );
-                      }
-                    } else {
-                      RentServices _rentServices = RentServices();
-                      RentModel editedPost = RentModel(
-                        address: _addressController.text,
-                        discreption: _descriptionController.text,
-                        rentprice: _priceController.text,
-                        city: dropdownvalue,
-                        imgurl: _theDlUrl!,
-                        postdate: Timestamp.now(),
-                        id: postid!,
-                        userid: userid!,
-                        username: username!,
-                      );
-                      await _rentServices
-                          .updateRentPost(rentModel: editedPost)
-                          .then((value) {
-                        Navigator.pop(context);
-                      });
-                    }
-                  },
-                  text: 'Update Post'),
-            ],
-          ),
-        ),
-      ),
+                          if (_selectedProfileImg != null) {
+                            if (dropdownvalue != "City") {
+                              if (_addressController.text.isNotEmpty &&
+                                  _priceController.text.isNotEmpty &&
+                                  _descriptionController.text.isNotEmpty) {
+                                await uploadTheSelectedFile(userid!);
+                                RentServices _rentServices = RentServices();
+
+                                RentModel editedPost = RentModel(
+                                  address: _addressController.text,
+                                  discreption: _descriptionController.text,
+                                  rentprice: _priceController.text,
+                                  city: dropdownvalue,
+                                  imgurl: _theDlUrl!,
+                                  postdate: Timestamp.now(),
+                                  id: postid!,
+                                  userid: userid!,
+                                  username: username!,
+                                );
+                                await _rentServices
+                                    .updateRentPost(
+                                        rentModel: editedPost,
+                                        oldImageurl: _oldImageUrl)
+                                    .then((value) {
+                                  Navigator.pop(context);
+                                });
+                              } else {
+                                setState(() {
+                                  loading = false;
+                                });
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                      backgroundColor:
+                                          Color.fromARGB(255, 255, 125, 125),
+                                      content:
+                                          Text('please fill out the inputs')),
+                                );
+                              }
+                            } else {
+                              setState(() {
+                                loading = false;
+                              });
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                    backgroundColor:
+                                        Color.fromARGB(255, 255, 125, 125),
+                                    content: Text('please select a City')),
+                              );
+                            }
+                          } else {
+                            RentServices _rentServices = RentServices();
+                            RentModel editedPost = RentModel(
+                              address: _addressController.text,
+                              discreption: _descriptionController.text,
+                              rentprice: _priceController.text,
+                              city: dropdownvalue,
+                              imgurl: _theDlUrl!,
+                              postdate: Timestamp.now(),
+                              id: postid!,
+                              userid: userid!,
+                              username: username!,
+                            );
+                            await _rentServices
+                                .updateRentPost(rentModel: editedPost)
+                                .then((value) {
+                              Navigator.pop(context);
+                            });
+                          }
+                        },
+                        text: 'Update Post'),
+                  ],
+                ),
+              ),
+            )
+          : Center(
+              child: CircularProgressIndicator(),
+            ),
     );
   }
 

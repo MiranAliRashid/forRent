@@ -45,6 +45,7 @@ dependencies:
   persistent_bottom_nav_bar: ^4.0.2
   image_picker: ^0.8.4+8
   url_launcher: ^6.0.20
+  fluttertoast: ^8.0.9
   
 
 dev_dependencies:

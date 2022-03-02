@@ -158,7 +158,7 @@ class _UserRentPostsState extends State<UserRentPosts> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       const Text(
-                        'You don\'t have an account \n Please Register',
+                        'You don\'t have an account \n Please Register or login',
                         style: TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
@@ -168,8 +168,7 @@ class _UserRentPostsState extends State<UserRentPosts> {
                       const SizedBox(
                         height: 20,
                       ),
-                      const Text(
-                          "for you to able to post you have to register"),
+                      const Text("for you to able to add posts"),
                       const SizedBox(
                         height: 20,
                       ),
@@ -178,12 +177,29 @@ class _UserRentPostsState extends State<UserRentPosts> {
                         child: general_button(
                           text: 'Register',
                           onpressed: () {
-                            Navigator.pushNamed(context, '/register');
+                            Navigator.pushNamed(context, '/register')
+                                .then((value) {
+                              setState(() {});
+                            });
                           },
                           backgroundColor:
                               const Color.fromARGB(255, 136, 191, 233),
                         ),
-                      )
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 20, right: 20),
+                        child: general_button(
+                          text: 'Login',
+                          onpressed: () {
+                            Navigator.pushNamed(context, '/login')
+                                .then((value) {
+                              setState(() {});
+                            });
+                          },
+                          backgroundColor:
+                              const Color.fromARGB(255, 136, 191, 233),
+                        ),
+                      ),
                     ],
                   ),
                 )),
