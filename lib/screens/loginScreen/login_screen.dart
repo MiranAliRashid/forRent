@@ -1,4 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:forrent/providers/auth_service.dart';
 import 'package:forrent/widgets/buttons.dart';
@@ -6,32 +5,31 @@ import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:provider/provider.dart';
 
 class LoginScreen extends StatefulWidget {
-  LoginScreen({Key? key}) : super(key: key);
+  const LoginScreen({Key? key}) : super(key: key);
 
   @override
   State<LoginScreen> createState() => _LoginScreenState();
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  FirebaseAuth _auth = FirebaseAuth.instance;
-  @override
   String cuntryCode = '+964';
-  TextEditingController _phoneNumberController = TextEditingController();
+  final TextEditingController _phoneNumberController = TextEditingController();
   late String _phoneNumber;
   final _formKey = GlobalKey<FormState>();
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
         resizeToAvoidBottomInset: false,
         appBar: AppBar(
           backgroundColor: const Color.fromARGB(255, 239, 248, 248),
-          foregroundColor: Color.fromARGB(255, 62, 128, 177),
+          foregroundColor: const Color.fromARGB(255, 62, 128, 177),
           centerTitle: true,
           elevation: 0,
-          title: Text('Login'),
+          title: const Text('Login'),
         ),
         body: Container(
           alignment: Alignment.center,
-          color: Color.fromARGB(255, 239, 248, 248),
+          color: const Color.fromARGB(255, 239, 248, 248),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -76,7 +74,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
                             return null;
                           },
-                          decoration: InputDecoration(
+                          decoration: const InputDecoration(
                             labelText: 'Phone Number',
                             border: OutlineInputBorder(
                               borderSide: BorderSide(),
@@ -88,7 +86,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             debugPrint(cuntryCode);
                           },
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 20,
                         ),
                         general_button(

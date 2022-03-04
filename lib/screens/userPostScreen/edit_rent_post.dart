@@ -1,16 +1,12 @@
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:forrent/dataModels/rent_model.dart';
-import 'package:forrent/dataModels/user_model.dart';
-import 'package:forrent/providers/auth_service.dart';
 import 'package:forrent/services/rent_services.dart';
 import 'package:forrent/widgets/buttons.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:provider/provider.dart';
 
 class EditRentPost extends StatefulWidget {
   const EditRentPost({Key? key, required this.mypost}) : super(key: key);
@@ -23,7 +19,6 @@ class _AddRentPostState extends State<EditRentPost> {
   final ImagePicker _imagePicker = ImagePicker();
   XFile? _selectedProfileImg;
   final FirebaseStorage _firebaseStorage = FirebaseStorage.instance;
-  final FirebaseAuth _auth = FirebaseAuth.instance;
 
   String? _theDlUrl;
   String? _oldImageUrl;
@@ -40,7 +35,6 @@ class _AddRentPostState extends State<EditRentPost> {
   final TextEditingController _descriptionController = TextEditingController();
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _addressController.text = widget.mypost.address;
     _priceController.text = widget.mypost.rentprice;
@@ -55,7 +49,6 @@ class _AddRentPostState extends State<EditRentPost> {
 
   @override
   Widget build(BuildContext context) {
-    User? theUser = _auth.currentUser;
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
@@ -246,7 +239,7 @@ class _AddRentPostState extends State<EditRentPost> {
                 ),
               ),
             )
-          : Center(
+          : const Center(
               child: CircularProgressIndicator(),
             ),
     );

@@ -22,7 +22,7 @@ general_button(
           color: Colors.grey.withOpacity(0.5),
           spreadRadius: 2,
           blurRadius: 2,
-          offset: Offset(3, 3), // changes position of shadow
+          offset: const Offset(3, 3), // changes position of shadow
         ),
       ],
     ),
@@ -48,7 +48,7 @@ general_button_withoutshasow(
   backgroundColor ??= Colors.transparent;
   textColor ??= Colors.black;
 
-  return Container(
+  return SizedBox(
     width: 300,
     height: 50,
     child: TextButton(

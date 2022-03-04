@@ -6,7 +6,6 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:forrent/dataModels/rent_model.dart';
-import 'package:forrent/dataModels/user_model.dart';
 import 'package:forrent/providers/auth_service.dart';
 import 'package:forrent/services/rent_services.dart';
 import 'package:forrent/widgets/buttons.dart';
@@ -194,9 +193,10 @@ class _AddRentPostState extends State<AddRentPost> {
                                     toastLength: Toast.LENGTH_SHORT,
                                     gravity: ToastGravity.CENTER,
                                     timeInSecForIosWeb: 1,
-                                    backgroundColor:
-                                        Color.fromARGB(255, 247, 150, 143),
-                                    textColor: Color.fromARGB(255, 0, 0, 0),
+                                    backgroundColor: const Color.fromARGB(
+                                        255, 247, 150, 143),
+                                    textColor:
+                                        const Color.fromARGB(255, 0, 0, 0),
                                     fontSize: 16.0);
                               }
                             } else {
@@ -210,8 +210,8 @@ class _AddRentPostState extends State<AddRentPost> {
                                   gravity: ToastGravity.CENTER,
                                   timeInSecForIosWeb: 1,
                                   backgroundColor:
-                                      Color.fromARGB(255, 247, 150, 143),
-                                  textColor: Color.fromARGB(255, 0, 0, 0),
+                                      const Color.fromARGB(255, 247, 150, 143),
+                                  textColor: const Color.fromARGB(255, 0, 0, 0),
                                   fontSize: 16.0);
                             }
                           } else {
@@ -225,8 +225,8 @@ class _AddRentPostState extends State<AddRentPost> {
                                 gravity: ToastGravity.CENTER,
                                 timeInSecForIosWeb: 1,
                                 backgroundColor:
-                                    Color.fromARGB(255, 247, 150, 143),
-                                textColor: Color.fromARGB(255, 0, 0, 0),
+                                    const Color.fromARGB(255, 247, 150, 143),
+                                textColor: const Color.fromARGB(255, 0, 0, 0),
                                 fontSize: 16.0);
                           }
                         },
@@ -235,7 +235,7 @@ class _AddRentPostState extends State<AddRentPost> {
                 ),
               ),
             )
-          : Center(
+          : const Center(
               child: CircularProgressIndicator(),
             ),
     );

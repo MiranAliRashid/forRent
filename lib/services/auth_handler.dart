@@ -21,7 +21,7 @@ class AuthHandlerScreen extends StatelessWidget {
           }
           if (snapshot.data == true) {
             //user is logged in so redirect to home
-            return NavConfigScreen();
+            return const NavConfigScreen();
           }
           //user is not logged in so redirect to login
           return const StartScreen();

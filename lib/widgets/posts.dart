@@ -1,9 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:forrent/dataModels/user_model.dart';
-import 'package:forrent/providers/auth_service.dart';
 import 'package:forrent/screens/allPostScreen/goto_user_profile.dart';
-import 'package:provider/provider.dart';
-
 import '../dataModels/rent_model.dart';
 import 'package:intl/intl.dart';
 
@@ -40,11 +36,11 @@ Widget postCard(List<RentModel>? data, int index, BuildContext context) {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           //show the image of the post while loading show a progress indicator
-          Container(
+          SizedBox(
             width: 400,
             height: 200,
             child: ClipRRect(
-              borderRadius: BorderRadius.only(
+              borderRadius: const BorderRadius.only(
                   topLeft: Radius.circular(20), topRight: Radius.circular(20)),
               child: Image.network(
                 data![index].imgurl,
@@ -75,11 +71,13 @@ Widget postCard(List<RentModel>? data, int index, BuildContext context) {
               children: [
                 Text(
                   data[index].city,
-                  style: TextStyle(fontSize: 30, fontWeight: FontWeight.w400),
+                  style: const TextStyle(
+                      fontSize: 30, fontWeight: FontWeight.w400),
                 ),
                 Text(
                   formatter.format(int.parse(data[index].rentprice)) + " IQD",
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.w400),
+                  style: const TextStyle(
+                      fontSize: 20, fontWeight: FontWeight.w400),
                 ),
               ],
             ),
@@ -91,7 +89,7 @@ Widget postCard(List<RentModel>? data, int index, BuildContext context) {
             margin: const EdgeInsets.only(top: 10),
             child: Text(
               data[index].address,
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.w300),
+              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w300),
               overflow: TextOverflow.ellipsis,
               maxLines: 2,
               textAlign: TextAlign.start,
@@ -101,7 +99,7 @@ Widget postCard(List<RentModel>? data, int index, BuildContext context) {
             padding: const EdgeInsets.only(top: 10, left: 10, right: 10),
             child: Text(
               data[index].discreption,
-              style: TextStyle(fontSize: 15, fontWeight: FontWeight.w300),
+              style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w300),
               maxLines: 5,
               overflow: TextOverflow.ellipsis,
               textAlign: TextAlign.justify,
@@ -114,7 +112,7 @@ Widget postCard(List<RentModel>? data, int index, BuildContext context) {
               children: [
                 Row(
                   children: [
-                    Text(
+                    const Text(
                       "Posted by: ",
                       style:
                           TextStyle(color: Color.fromARGB(255, 114, 114, 114)),
@@ -131,7 +129,7 @@ Widget postCard(List<RentModel>? data, int index, BuildContext context) {
                                     userId: data[index].userid,
                                   )));
                     },
-                    child: Text("User Profile"))
+                    child: const Text("User Profile"))
               ],
             ),
           ),

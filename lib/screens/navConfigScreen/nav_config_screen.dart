@@ -1,27 +1,22 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:forrent/providers/auth_service.dart';
 import 'package:forrent/screens/allPostScreen/all_post_screen.dart';
 import 'package:forrent/screens/profileScreen/profile.dart';
 import 'package:forrent/screens/userPostScreen/user_rent_posts.dart';
-import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
-import 'package:provider/provider.dart';
 
 class NavConfigScreen extends StatefulWidget {
-  NavConfigScreen({Key? key}) : super(key: key);
+  const NavConfigScreen({Key? key}) : super(key: key);
 
   @override
   State<NavConfigScreen> createState() => _NavConfigScreenState();
 }
 
 class _NavConfigScreenState extends State<NavConfigScreen> {
-  @override
   int _selectedIndex = 1;
 
-  static List<Widget> _widgetOptions = <Widget>[
-    UserRentPosts(),
-    AllPostScreen(),
-    UserProfile(),
+  static final List<Widget> _widgetOptions = <Widget>[
+    const UserRentPosts(),
+    const AllPostScreen(),
+    const UserProfile(),
   ];
 
   void _onItemTapped(int index) {
@@ -52,8 +47,8 @@ class _NavConfigScreenState extends State<NavConfigScreen> {
           ),
         ],
         currentIndex: _selectedIndex,
-        selectedItemColor: Color.fromARGB(255, 62, 128, 177),
-        backgroundColor: Color.fromARGB(255, 239, 248, 248),
+        selectedItemColor: const Color.fromARGB(255, 62, 128, 177),
+        backgroundColor: const Color.fromARGB(255, 239, 248, 248),
         elevation: 0,
         iconSize: 30,
         showSelectedLabels: false,

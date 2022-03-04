@@ -1,4 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:forrent/dataModels/rent_model.dart';
 import 'package:forrent/services/rent_services.dart';
@@ -13,7 +12,6 @@ class AllPostScreen extends StatefulWidget {
 
 class _UserRentPostsState extends State<AllPostScreen> {
   final RentServices _rentServices = RentServices();
-  final FirebaseAuth _auth = FirebaseAuth.instance;
 
   // Initial Selected Value
   String fliterCity = 'City';
@@ -28,12 +26,12 @@ class _UserRentPostsState extends State<AllPostScreen> {
         foregroundColor: const Color.fromARGB(255, 62, 128, 177),
         centerTitle: true,
         elevation: 0,
-        title: Text('Rent Posts'),
+        title: const Text('Rent Posts'),
         actions: [
           Padding(
             padding: const EdgeInsets.only(right: 16.0),
             child: IconButton(
-              icon: Icon(
+              icon: const Icon(
                 Icons.filter_list,
                 size: 30,
               ),
@@ -45,7 +43,7 @@ class _UserRentPostsState extends State<AllPostScreen> {
         ],
       ),
       body: Container(
-        color: Color.fromARGB(255, 247, 247, 247),
+        color: const Color.fromARGB(255, 247, 247, 247),
         child: StreamBuilder<List<RentModel>>(
           stream: _rentServices.getStreamOfRentPosts(
               city: fliterCity == "City" ? null : fliterCity),
@@ -70,11 +68,6 @@ class _UserRentPostsState extends State<AllPostScreen> {
               return ListView.builder(
                 itemCount: snapshot.data!.length,
                 itemBuilder: (BuildContext context, int index) {
-                  // return ListTile(
-                  //   title: Text(snapshot.data![index].city),
-                  //   subtitle: Text(DateFormat('dd-MM-yyyy')
-                  //       .format(snapshot.data![index].postdate.toDate())),
-                  // );
                   return postCard(snapshot.data, index, context);
                 },
               );
@@ -90,7 +83,7 @@ class _UserRentPostsState extends State<AllPostScreen> {
         context: context,
         builder: (context) {
           return AlertDialog(
-            title: Text('Filter by City'),
+            title: const Text('Filter by City'),
             content: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
@@ -131,7 +124,7 @@ class _UserRentPostsState extends State<AllPostScreen> {
             ),
             actions: [
               ElevatedButton(
-                child: Text('Clear Filter'),
+                child: const Text('Clear Filter'),
                 onPressed: () {
                   setState(() {
                     fliterCity = 'City';

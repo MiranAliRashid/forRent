@@ -1,12 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:forrent/dataModels/rent_model.dart';
-import 'package:forrent/providers/auth_service.dart';
 import 'package:forrent/screens/userPostScreen/edit_rent_post.dart';
 import 'package:forrent/services/rent_services.dart';
 import 'package:forrent/widgets/buttons.dart';
 import 'package:forrent/widgets/posts.dart';
-import 'package:provider/provider.dart';
 
 class UserRentPosts extends StatefulWidget {
   const UserRentPosts({Key? key}) : super(key: key);
@@ -86,7 +84,7 @@ class _UserRentPostsState extends State<UserRentPosts> {
                             height: 40,
 
                             decoration: BoxDecoration(
-                              color: Color.fromARGB(120, 0, 0, 0),
+                              color: const Color.fromARGB(120, 0, 0, 0),
                               borderRadius: BorderRadius.circular(10),
                             ),
                             //make a dropbdown menu to delete and edit
@@ -94,7 +92,7 @@ class _UserRentPostsState extends State<UserRentPosts> {
                               alignment: Alignment.bottomCenter,
                               underline: Container(
                                 margin: const EdgeInsets.only(top: 60),
-                                child: Icon(
+                                child: const Icon(
                                   Icons.more_horiz,
                                   color: Colors.white,
                                   size: 30,
@@ -103,11 +101,11 @@ class _UserRentPostsState extends State<UserRentPosts> {
                               iconSize: 0.0,
                               items: const [
                                 DropdownMenuItem(
-                                  child: const Text('Edit'),
+                                  child: Text('Edit'),
                                   value: 'edit',
                                 ),
                                 DropdownMenuItem(
-                                  child: const Text('Delete'),
+                                  child: Text('Delete'),
                                   value: 'delete',
                                 ),
                               ],

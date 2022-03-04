@@ -6,7 +6,7 @@ import '../../providers/auth_service.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class VisiteProfile extends StatefulWidget {
-  VisiteProfile({Key? key, required this.userId}) : super(key: key);
+  const VisiteProfile({Key? key, required this.userId}) : super(key: key);
   final String userId;
   @override
   State<VisiteProfile> createState() => _VisiteProfileState();
@@ -23,7 +23,7 @@ class _VisiteProfileState extends State<VisiteProfile> {
         foregroundColor: const Color.fromARGB(255, 62, 128, 177),
         centerTitle: true,
         elevation: 0,
-        title: Text('Profile'),
+        title: const Text('Profile'),
       ),
       body: Container(
         alignment: Alignment.center,
@@ -40,13 +40,13 @@ class _VisiteProfileState extends State<VisiteProfile> {
                   Padding(
                     padding: const EdgeInsets.only(top: 120),
                     child: Container(
-                      padding: EdgeInsets.only(bottom: 87),
+                      padding: const EdgeInsets.only(bottom: 87),
                       alignment: Alignment.topLeft,
                       decoration: const BoxDecoration(
                         color: Colors.white,
                         boxShadow: [
                           BoxShadow(
-                            color: const Color.fromARGB(105, 0, 0, 0),
+                            color: Color.fromARGB(105, 0, 0, 0),
                             offset: Offset(0, -2),
                             blurRadius: 1,
                           ),
@@ -68,7 +68,7 @@ class _VisiteProfileState extends State<VisiteProfile> {
                             children: [
                               Text(
                                 snapshot.data.username,
-                                style: TextStyle(
+                                style: const TextStyle(
                                     fontSize: 40, fontWeight: FontWeight.w400),
                               ),
                             ],
@@ -84,7 +84,7 @@ class _VisiteProfileState extends State<VisiteProfile> {
                             child: Row(
                               children: [
                                 const Padding(
-                                  padding: const EdgeInsets.only(left: 8.0),
+                                  padding: EdgeInsets.only(left: 8.0),
                                   child: Text("phone : "),
                                 ),
                                 Text(
@@ -106,7 +106,7 @@ class _VisiteProfileState extends State<VisiteProfile> {
                                 },
                                 text: "call",
                                 backgroundColor:
-                                    Color.fromARGB(255, 159, 205, 236)),
+                                    const Color.fromARGB(255, 159, 205, 236)),
                           )
                         ],
                       ),
@@ -131,10 +131,10 @@ class _VisiteProfileState extends State<VisiteProfile> {
                                   ),
                                 )
                               : const Padding(
-                                  padding: const EdgeInsets.only(top: 30.0),
+                                  padding: EdgeInsets.only(top: 30.0),
                                   child: CircleAvatar(
                                     backgroundColor:
-                                        const Color.fromARGB(255, 62, 128, 177),
+                                        Color.fromARGB(255, 62, 128, 177),
                                     radius: 80,
                                     child: Text(
                                       "image",
@@ -152,7 +152,7 @@ class _VisiteProfileState extends State<VisiteProfile> {
                 ],
               );
             } else {
-              return Center(
+              return const Center(
                 child: CircularProgressIndicator(),
               );
             }

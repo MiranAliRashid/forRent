@@ -1,4 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
@@ -7,7 +6,7 @@ import '../../providers/auth_service.dart';
 import '../../widgets/buttons.dart';
 
 class LoginVirefication extends StatefulWidget {
-  LoginVirefication({Key? key, this.verificationID, this.userName})
+  const LoginVirefication({Key? key, this.verificationID, this.userName})
       : super(key: key);
   final String? verificationID;
   final String? userName;
@@ -17,8 +16,6 @@ class LoginVirefication extends StatefulWidget {
 }
 
 class _LoginVireficationState extends State<LoginVirefication> {
-  FirebaseAuth _auth = FirebaseAuth.instance;
-
   String? smsCode;
   bool loading = false;
   @override
@@ -30,7 +27,7 @@ class _LoginVireficationState extends State<LoginVirefication> {
         resizeToAvoidBottomInset: false,
         appBar: AppBar(
           backgroundColor: const Color.fromARGB(255, 239, 248, 248),
-          foregroundColor: Color.fromARGB(255, 62, 128, 177),
+          foregroundColor: const Color.fromARGB(255, 62, 128, 177),
           centerTitle: true,
           elevation: 0,
           title: const Text('Confirm Phone Number'),
@@ -51,7 +48,7 @@ class _LoginVireficationState extends State<LoginVirefication> {
                       ),
                       Text(
                         'A Verification Code is sent to \n $phoneNumber',
-                        style: TextStyle(fontSize: 20),
+                        style: const TextStyle(fontSize: 20),
                         textAlign: TextAlign.center,
                       ),
                       SizedBox(
@@ -93,8 +90,8 @@ class _LoginVireficationState extends State<LoginVirefication> {
                                 gravity: ToastGravity.CENTER,
                                 timeInSecForIosWeb: 1,
                                 backgroundColor:
-                                    Color.fromARGB(255, 247, 150, 143),
-                                textColor: Color.fromARGB(255, 0, 0, 0),
+                                    const Color.fromARGB(255, 247, 150, 143),
+                                textColor: const Color.fromARGB(255, 0, 0, 0),
                                 fontSize: 16.0);
                             setState(() {
                               loading = false;
@@ -116,9 +113,10 @@ class _LoginVireficationState extends State<LoginVirefication> {
                                     toastLength: Toast.LENGTH_SHORT,
                                     gravity: ToastGravity.CENTER,
                                     timeInSecForIosWeb: 1,
-                                    backgroundColor:
-                                        Color.fromARGB(255, 247, 150, 143),
-                                    textColor: Color.fromARGB(255, 0, 0, 0),
+                                    backgroundColor: const Color.fromARGB(
+                                        255, 247, 150, 143),
+                                    textColor:
+                                        const Color.fromARGB(255, 0, 0, 0),
                                     fontSize: 16.0);
                                 setState(() {
                                   loading = false;
@@ -130,9 +128,10 @@ class _LoginVireficationState extends State<LoginVirefication> {
                                     toastLength: Toast.LENGTH_SHORT,
                                     gravity: ToastGravity.CENTER,
                                     timeInSecForIosWeb: 1,
-                                    backgroundColor:
-                                        Color.fromARGB(255, 247, 150, 143),
-                                    textColor: Color.fromARGB(255, 0, 0, 0),
+                                    backgroundColor: const Color.fromARGB(
+                                        255, 247, 150, 143),
+                                    textColor:
+                                        const Color.fromARGB(255, 0, 0, 0),
                                     fontSize: 16.0);
                                 setState(() {
                                   loading = false;
@@ -147,6 +146,6 @@ class _LoginVireficationState extends State<LoginVirefication> {
                   ),
                 ),
               )
-            : Center(child: CircularProgressIndicator()));
+            : const Center(child: CircularProgressIndicator()));
   }
 }

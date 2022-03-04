@@ -1,10 +1,8 @@
 import 'dart:io';
-import 'dart:math';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:forrent/dataModels/user_model.dart';
 import 'package:forrent/widgets/buttons.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
@@ -12,7 +10,7 @@ import 'package:provider/provider.dart';
 import '../../providers/auth_service.dart';
 
 class UserProfile extends StatefulWidget {
-  UserProfile({Key? key}) : super(key: key);
+  const UserProfile({Key? key}) : super(key: key);
 
   @override
   State<UserProfile> createState() => _UserProfileState();
@@ -20,11 +18,7 @@ class UserProfile extends StatefulWidget {
 
 class _UserProfileState extends State<UserProfile> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
-  final FirebaseStorage _firebaseStorage = FirebaseStorage.instance;
 
-  String? _theDlUrl;
-  final ImagePicker _imagePicker = ImagePicker();
-  XFile? _selectedProfileImg;
   @override
   Widget build(BuildContext context) {
     if (_auth.currentUser!.phoneNumber != null) {
@@ -45,7 +39,7 @@ class _UserProfileState extends State<UserProfile> {
             foregroundColor: const Color.fromARGB(255, 62, 128, 177),
             centerTitle: true,
             elevation: 0,
-            title: Text('Profile'),
+            title: const Text('Profile'),
           ),
           body: Container(
             alignment: Alignment.center,
@@ -63,13 +57,13 @@ class _UserProfileState extends State<UserProfile> {
                         child: Padding(
                           padding: const EdgeInsets.only(top: 120),
                           child: Container(
-                            padding: EdgeInsets.only(bottom: 87),
+                            padding: const EdgeInsets.only(bottom: 87),
                             alignment: Alignment.topLeft,
                             decoration: const BoxDecoration(
                               color: Colors.white,
                               boxShadow: [
                                 BoxShadow(
-                                  color: const Color.fromARGB(105, 0, 0, 0),
+                                  color: Color.fromARGB(105, 0, 0, 0),
                                   offset: Offset(0, -2),
                                   blurRadius: 1,
                                 ),
@@ -91,7 +85,7 @@ class _UserProfileState extends State<UserProfile> {
                                   children: [
                                     Text(
                                       snapshot.data.username,
-                                      style: TextStyle(
+                                      style: const TextStyle(
                                           fontSize: 40,
                                           fontWeight: FontWeight.w400),
                                     ),
@@ -108,8 +102,7 @@ class _UserProfileState extends State<UserProfile> {
                                   child: Row(
                                     children: [
                                       const Padding(
-                                        padding:
-                                            const EdgeInsets.only(left: 8.0),
+                                        padding: EdgeInsets.only(left: 8.0),
                                         child: Text("phone : "),
                                       ),
                                       Text(
@@ -132,12 +125,12 @@ class _UserProfileState extends State<UserProfile> {
                                         showDialog(
                                             context: context,
                                             builder: (_) {
-                                              return EditProfileImage();
+                                              return const EditProfileImage();
                                             }).then((value) => setState(() {}));
                                       },
                                       text: 'Edit Profile ',
-                                      backgroundColor:
-                                          Color.fromARGB(255, 189, 221, 245),
+                                      backgroundColor: const Color.fromARGB(
+                                          255, 189, 221, 245),
                                       //child: Text("Edit"),
                                       // style: ButtonStyle(
                                       //   backgroundColor:
@@ -168,8 +161,8 @@ class _UserProfileState extends State<UserProfile> {
                                                 ModalRoute.withName('/')));
                                       },
                                       text: "logout",
-                                      backgroundColor:
-                                          Color.fromARGB(255, 113, 173, 219),
+                                      backgroundColor: const Color.fromARGB(
+                                          255, 113, 173, 219),
                                     ),
                                   ],
                                 )
@@ -197,10 +190,10 @@ class _UserProfileState extends State<UserProfile> {
                                       ),
                                     )
                                   : const Padding(
-                                      padding: const EdgeInsets.only(top: 30.0),
+                                      padding: EdgeInsets.only(top: 30.0),
                                       child: CircleAvatar(
-                                        backgroundColor: const Color.fromARGB(
-                                            255, 62, 128, 177),
+                                        backgroundColor:
+                                            Color.fromARGB(255, 62, 128, 177),
                                         radius: 80,
                                         child: Text(
                                           "image",
@@ -218,7 +211,7 @@ class _UserProfileState extends State<UserProfile> {
                     ],
                   );
                 } else {
-                  return Center(
+                  return const Center(
                     child: CircularProgressIndicator(),
                   );
                 }
@@ -301,7 +294,7 @@ class _UserProfileState extends State<UserProfile> {
 }
 
 class EditProfileImage extends StatefulWidget {
-  EditProfileImage({Key? key}) : super(key: key);
+  const EditProfileImage({Key? key}) : super(key: key);
 
   @override
   State<EditProfileImage> createState() => _EditProfileImageState();
@@ -310,7 +303,7 @@ class EditProfileImage extends StatefulWidget {
 class _EditProfileImageState extends State<EditProfileImage> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseStorage _firebaseStorage = FirebaseStorage.instance;
-  TextEditingController _usernameController = TextEditingController();
+  final TextEditingController _usernameController = TextEditingController();
   String? _theDlUrl;
   final ImagePicker _imagePicker = ImagePicker();
   XFile? _selectedProfileImg;
@@ -318,8 +311,8 @@ class _EditProfileImageState extends State<EditProfileImage> {
   Widget build(BuildContext context) {
     User? theUser = _auth.currentUser;
     return AlertDialog(
-      title: Center(child: Text('Edit Profile Image')),
-      content: Container(
+      title: const Center(child: Text('Edit Profile Image')),
+      content: SizedBox(
         height: 300,
         child: Column(
           children: [
@@ -359,7 +352,7 @@ class _EditProfileImageState extends State<EditProfileImage> {
                 child: const Text('change your profile image')),
             TextField(
               controller: _usernameController,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 labelText: 'change your username',
               ),
             ),
@@ -399,7 +392,7 @@ class _EditProfileImageState extends State<EditProfileImage> {
                   );
                 }
               },
-              backgroundColor: Color.fromARGB(255, 113, 189, 219),
+              backgroundColor: const Color.fromARGB(255, 113, 189, 219),
             ),
             const SizedBox(
               width: 20,
@@ -410,7 +403,7 @@ class _EditProfileImageState extends State<EditProfileImage> {
               onpressed: () {
                 Navigator.pop(context);
               },
-              backgroundColor: Color.fromARGB(255, 113, 173, 219),
+              backgroundColor: const Color.fromARGB(255, 113, 173, 219),
             ),
           ],
         )

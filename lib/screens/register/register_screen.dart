@@ -7,30 +7,30 @@ import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:provider/provider.dart';
 
 class RegisterScreen extends StatefulWidget {
-  RegisterScreen({Key? key}) : super(key: key);
+  const RegisterScreen({Key? key}) : super(key: key);
 
   @override
   State<RegisterScreen> createState() => _RegisterScreenState();
 }
 
 class _RegisterScreenState extends State<RegisterScreen> {
-  @override
   final _formKey = GlobalKey<FormState>();
-  TextEditingController _usernameController = TextEditingController();
-  TextEditingController _phoneNumberController = TextEditingController();
+  final TextEditingController _usernameController = TextEditingController();
+  final TextEditingController _phoneNumberController = TextEditingController();
   DateTime? _selectedDate;
   late String username;
   late String phoneNumber;
   String cuntrycode = "+964";
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
         backgroundColor: const Color.fromARGB(255, 239, 248, 248),
-        foregroundColor: Color.fromARGB(255, 62, 128, 177),
+        foregroundColor: const Color.fromARGB(255, 62, 128, 177),
         centerTitle: true,
         elevation: 0,
-        title: Text('Register'),
+        title: const Text('Register'),
       ),
       body: Container(
         color: const Color.fromARGB(255, 239, 248, 248),
@@ -103,7 +103,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
                         return null;
                       },
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         labelText: 'Phone Number',
                         border: OutlineInputBorder(
                           borderSide: BorderSide(),
@@ -128,7 +128,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                   ? DateFormat('dd-MM-yyyy')
                                       .format(_selectedDate!)
                                   : "Date of birth",
-                              style: TextStyle(
+                              style: const TextStyle(
                                 fontSize: 20,
                                 fontWeight: FontWeight.bold,
                                 color: Color.fromARGB(255, 62, 128, 177),
@@ -139,7 +139,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           alignment: Alignment.topCenter,
                           decoration: BoxDecoration(
                             color: Colors.white,
-                            boxShadow: [
+                            boxShadow: const [
                               BoxShadow(
                                 color: Color.fromARGB(255, 207, 207, 207),
                                 offset: Offset(2, 3),
@@ -165,7 +165,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                   }
                                 });
                               },
-                              icon: Icon(
+                              icon: const Icon(
                                 Icons.date_range,
                                 size: 40,
                                 color: Color.fromARGB(255, 62, 128, 177),
@@ -218,11 +218,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
     showDialog(
       context: context,
       builder: (ctx) => AlertDialog(
-        title: Text('warnining  !'),
+        title: const Text('warnining  !'),
         content: Text(error),
         actions: <Widget>[
           TextButton(
-            child: Text('Okay'),
+            child: const Text('Okay'),
             onPressed: () {
               Navigator.of(ctx).pop();
             },
