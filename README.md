@@ -14,7 +14,6 @@ who own a place and want to rent it, it helps the user get the place they want e
 
 <h4>Used technologies flutter, firebase, dart programming</h4>
 <p>
-<img src="assets\images\forent1.gif" alt="gif 1"  />
 <img src="assets\images\forent2.gif" alt="gif 2"  />
 </p>
 
