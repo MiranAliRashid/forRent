@@ -19,7 +19,19 @@ who own a place and want to rent it, it helps the user get the place they want e
 <p>
 
   
+
+https://user-images.githubusercontent.com/77441978/157510174-d45e2276-42aa-4cf5-82b7-1b846c892d49.mp4
+
+
+
+https://user-images.githubusercontent.com/77441978/157510219-a9908279-99f3-4622-989f-1ae86b454479.mp4
+
+
   
+
+https://user-images.githubusercontent.com/77441978/157510259-2f0f33b0-f90e-4783-9974-ef0e2b6539db.mp4
+
+
   
 
 </p>
