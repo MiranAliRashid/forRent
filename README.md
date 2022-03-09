@@ -17,7 +17,7 @@ who own a place and want to rent it, it helps the user get the place they want e
 <img src="assets\images\forent2.gif" alt="gif 2"  />
 </p>
 <p>
-<video controls>
+<video width="320" height="240" controls>
   <source src="assets\videos\show_ex1.mp4" type="video/mp4">
   
   
