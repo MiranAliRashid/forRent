@@ -12,7 +12,6 @@ class AuthService extends ChangeNotifier {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
   UserModel? theUser;
-
   String? phoneNumber;
   String? smsCode;
   String? verificationID;
